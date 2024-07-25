@@ -1,5 +1,6 @@
 export ZSH="$HOME/.oh-my-zsh"
 export PATH=$HOME/.local/bin:$HOME/.deno/bin:$PATH
+export EDITOR="nvim"
 
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" 
@@ -23,6 +24,7 @@ alias gs="git status"
 alias gcb="git checkout -b"
 alias gc="git checkout"
 alias ga="git add -A"
+alias gm="git commit -m"
 alias gam="git add -A && git commit -m"
 alias game="git add -A && git commit --allow-empty-message -m ''"
 alias gpsh="git push origin HEAD"
@@ -39,12 +41,16 @@ alias c="clear"
 alias cats="highlight -O ansi --force"
 
 alias resetnvim="rm -rf ~/.cache/nvim ~/.config/nvim/plugin ~/.local/share/nvim ~/.config/coc"
-alias vim="nvim"
 alias vi="nvim"
+alias vim="nvim -u ~/.dotfiles/neovim/.config/nvim/lua/barebones/init.lua"
+alias cat="highlight -O xterm256 --force"
 
 alias n="n.sh"
 alias ps="ps.sh"
 
+gd () {
+	nvim -p $(git diff --name-only) -c ":tabdo :Gvdiffsplit"
+}
 gif() { ffmpeg -i $1.mov -pix_fmt rgb8 -r 10 $1.gif && gifsicle -O3 $1.gif -o $1.gif }
 mkcd () { mkdir $1 && cd $1 }
 search() { grep "$1" ~/.zsh_history | tail -n 20 }

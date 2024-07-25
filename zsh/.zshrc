@@ -1,3 +1,5 @@
+source ~/.dotfiles/helpers.sh
+
 export ZSH="$HOME/.oh-my-zsh"
 export PATH=$HOME/.local/bin:$HOME/.deno/bin:$PATH
 export EDITOR="nvim"
@@ -6,19 +8,18 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" 
 [[ -r $NVM_DIR/bash_completion ]] && \. $NVM_DIR/bash_completion
 
-ZSH_THEME="elan"
-
-plugins=(z zsh-syntax-highlighting zsh-autosuggestions)
-
+export ZSH_THEME="elan"
+export plugins=(z zsh-syntax-highlighting zsh-autosuggestions)
 source $ZSH/oh-my-zsh.sh
-
-COMPLETION_WAITING_DOTS="true"
+export COMPLETION_WAITING_DOTS="true"
 bindkey '^ ' autosuggest-execute
 
-alias ezsh="nvim ~/.dotfiles/zsh/.zshrc"
+NVIM_EXEC=$(which nvim)
+
+alias ezsh="$NVIM_EXEC ~/.dotfiles/zsh/.zshrc"
 alias evim="cd ~/.dotfiles/neovim/.config/nvim && n ."
-alias eterm="nvim ~/.dotfiles/alacritty/.config/alacritty/alacritty.toml"
-alias etmux="nvim ~/.dotfiles/tmux/.config/tmux/tmux.conf"
+alias eterm="$NVIM_EXEC ~/.dotfiles/alacritty/.config/alacritty/alacritty.toml"
+alias etmux="$NVIM_EXEC ~/.dotfiles/tmux/.config/tmux/tmux.conf"
 
 alias gs="git status"
 alias gcb="git checkout -b"
@@ -41,8 +42,9 @@ alias c="clear"
 alias cats="highlight -O ansi --force"
 
 alias resetnvim="rm -rf ~/.cache/nvim ~/.config/nvim/plugin ~/.local/share/nvim ~/.config/coc"
-alias vi="nvim"
-alias vim="nvim -u ~/.dotfiles/neovim/.config/nvim/lua/barebones/init.lua"
+
+alias vi="$NVIM_EXEC"
+alias vim="$NVIM_EXEC -u ~/.dotfiles/neovim/.config/nvim/lua/barebones/init.lua"
 alias cat="highlight -O xterm256 --force"
 
 alias n="n.sh"
@@ -50,6 +52,9 @@ alias ps="ps.sh"
 
 gd () {
 	nvim -p $(git diff --name-only) -c ":tabdo :Gvdiffsplit"
+}
+nvim() {
+  h_cecho --error "use 'vi'!"
 }
 gif() { ffmpeg -i $1.mov -pix_fmt rgb8 -r 10 $1.gif && gifsicle -O3 $1.gif -o $1.gif }
 mkcd () { mkdir $1 && cd $1 }
